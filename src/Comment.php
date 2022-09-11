@@ -2,22 +2,23 @@
 
 namespace a3330\pro_php_v2\src;
 
-include_once "src/Model.php";
+//include_once "src/Model.php";
 
 use a3330\pro_php_v2\src\User;
-use a3330\pro_php_v2\src\Articles;
+use a3330\pro_php_v2\src\Article;
+use a3330\pro_php_v2\src\Traits\Id;
 
-class Comments extends Model
+class Comment
 {
+    use Id;
 
     public function __construct(
-        int $id = null,
         private User $author_id,
-        private Articles $articles_id,
+        private Article $article_id,
         private ?string $text
     )
     {
-        parent::__construct($id);
+        //parent::__construct($id);
     }
 
     public function __toString(){
@@ -41,19 +42,19 @@ class Comments extends Model
     }
 
     /**
-     * @return Articles
+     * @return Article
      */
-    public function getArticlesId(): Articles
+    public function getArticlesId(): Article
     {
-        return $this->articles_id;
+        return $this->article_id;
     }
 
     /**
-     * @param Articles $articles_id
+     * @param Article $article_id
      */
-    public function setArticlesId(Articles $articles_id): void
+    public function setArticlesId(Article $article_id): void
     {
-        $this->articles_id = $articles_id;
+        $this->article_id = $article_id;
     }
 
     /**
@@ -62,14 +63,6 @@ class Comments extends Model
     public function getText(): ?string
     {
         return $this->text;
-    }
-
-    /**
-     * @param string|null $text
-     */
-    public function setText(?string $text): void
-    {
-        $this->text = $text;
     }
 
 }
