@@ -1,6 +1,6 @@
 <?php
 
-namespace a3330\pro_php_v2\src;
+namespace a3330\pro_php_v2\src\Models;
 
 class Model
 {

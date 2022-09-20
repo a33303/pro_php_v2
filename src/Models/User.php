@@ -1,6 +1,6 @@
 <?php
 
-namespace a3330\pro_php_v2\src;
+namespace a3330\pro_php_v2\src\Models;
 
 //include_once "src/Model.php";
 
@@ -22,6 +22,7 @@ class User
 
     public function __construct(
         //int $id = null,
+        private string $email,
         private ?string $firstName,
         private ?string $lastName,
     )
@@ -32,9 +33,18 @@ class User
 
     public function __toString(){
         return
+            $this->email. ' '.
             $this->firstName. ' '.
             $this->lastName .
             ' (на сайте с ' . $this->createdAt->format('Y-m-d') . ')';
+    }
+
+    /**
+     * @return string
+     */
+    public function getEmail(): string
+    {
+        return $this->email;
     }
 
     /**

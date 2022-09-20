@@ -4,7 +4,7 @@ namespace a3330\pro_php_v2\src\Repositories;
 
 use a3330\pro_php_v2\src\Connection\ConnectorInterface;
 use a3330\pro_php_v2\src\Connection\SqLiteConnector;
-use a3330\pro_php_v2\src\Comment;
+use a3330\pro_php_v2\src\Models\Comment;
 use a3330\pro_php_v2\src\Exceptions\CommentNotFoundException;
 use PDO;
 
