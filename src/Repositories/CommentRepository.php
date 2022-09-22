@@ -36,21 +36,21 @@ class CommentRepository implements CommentRepositoryInterface
         );
     }
 
-    public function get(int $id): Comment
+    public function get(string $text): Comment
     {
         $statement = $this->connection->prepare(
-            'SELECT * FROM comment WHERE id = :commentId'
+            'SELECT * FROM comment WHERE message_text = :commentText'
         );
 
         $statement->execute([
-            'commentId' => $id
+            'commentText' => $text
         ]);
 
         $commentObj = $statement->fetch(PDO::FETCH_OBJ);
 
         if (!$commentObj)
         {
-            throw new CommentNotFoundException ("Comment with id:$id not found");
+            throw new CommentNotFoundException ("Comment with $text not found");
         }
 
         $comment = new Comment

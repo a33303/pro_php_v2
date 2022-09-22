@@ -31,7 +31,7 @@ class CreateArticleCommand extends CreateArticleCommandInterface
         $title = $argument->get('title');
         $text = $argument->get('text');
 
-        if ($this->userExist($title))
+        if ($this->articleExist($title))
         {
             throw new CommandException("Article already exist: $title".PHP_EOL);
         }
@@ -52,7 +52,7 @@ class CreateArticleCommand extends CreateArticleCommandInterface
         );
     }
 
-    private function userExist(string $title): bool
+    private function articleExist(string $title): bool
     {
         try {
             $this->articlesRepository->findArticleByTitle($title);
