@@ -2,7 +2,7 @@
 
 namespace a3330\pro_php_v2\src\Date;
 
-use src\Enums\Date;
+use a3330\pro_php_v2\src\Enums\Date;
 use DateTimeImmutable;
 
 class DateTime extends DateTimeImmutable

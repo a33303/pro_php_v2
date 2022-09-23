@@ -1,11 +1,11 @@
 <?php
 
-namespace a3330\pro_php_v2\src;
+namespace a3330\pro_php_v2\src\Models;
 
 //include_once "src/Model.php";
 
-use a3330\pro_php_v2\src\User;
-use a3330\pro_php_v2\src\Article;
+use a3330\pro_php_v2\src\Models\User;
+use a3330\pro_php_v2\src\Models\Article;
 use a3330\pro_php_v2\src\Traits\Id;
 
 class Comment

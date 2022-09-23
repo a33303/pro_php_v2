@@ -4,11 +4,13 @@ namespace a3330\pro_php_v2\src\Repositories;
 
 use a3330\pro_php_v2\src\Connection\ConnectorInterface;
 use a3330\pro_php_v2\src\Connection\SqLiteConnector;
-use a3330\pro_php_v2\src\Article;
+use a3330\pro_php_v2\src\Exceptions\UserNotFoundException;
+use a3330\pro_php_v2\src\Models\Article;
 use a3330\pro_php_v2\src\Exceptions\ArticleNotFoundException;
+use a3330\pro_php_v2\src\Models\User;
 use PDO;
 
-class ArticlesRepository implements ArticlesRepositoryInterface
+class ArticleRepository implements ArticlesRepositoryInterface
 {
     private PDO $connection;
 
@@ -16,24 +18,6 @@ class ArticlesRepository implements ArticlesRepositoryInterface
     {
         $this->connector = $connector ?? new SqLiteConnector();
         $this->connection = $this->connector->getConnection();
-    }
-
-    public function save(Article $article): void
-    {
-        $statement = $this->connection->prepare(
-            '
-                    INSERT INTO post (author_id, title, text)
-                    VALUES (:author_id, :title, :text)
-                  '
-        );
-
-        $statement->execute(
-            [
-                ':author_id' =>$article->getAuthorId(),
-                ':title' => $article->getTitle(),
-                ':text' => $article->getDescription()
-            ]
-        );
     }
 
     public function get(int $id): Article
@@ -48,11 +32,39 @@ class ArticlesRepository implements ArticlesRepositoryInterface
 
         $articleObj = $statement->fetch(PDO::FETCH_OBJ);
 
-        if (!$articleObj)
-        {
+        if (!$articleObj) {
             throw new ArticleNotFoundException ("Article with id:$id not found");
         }
 
+        return $this->mapArticle($articleObj);
+    }
+
+    /**
+     * @throws UserNotFoundException
+     * @throws \Exception
+     */
+    public function findArticleByTitle(string|int $title): Article
+    {
+        $statement = $this->connection->prepare(
+            "select * from user where title = :title"
+        );
+
+        $statement->execute([
+            'title' => $title
+        ]);
+
+        $articleObj = $statement->fetch(PDO::FETCH_OBJ);
+
+        if(!$articleObj)
+        {
+            throw new ArticleNotFoundException("Article with title : $title not found");
+        }
+
+        return $this->mapArticle($articleObj);
+    }
+
+    public function mapArticle(object $articleObj): Article
+    {
         $article = new Article
         (
             $articleObj->author_id,

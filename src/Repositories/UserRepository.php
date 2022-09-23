@@ -6,7 +6,7 @@ use a3330\pro_php_v2\src\Connection\ConnectorInterface;
 use a3330\pro_php_v2\src\Connection\SqLiteConnector;
 use a3330\pro_php_v2\src\Date\DateTime;
 use a3330\pro_php_v2\src\Exceptions\UserNotFoundException;
-use a3330\pro_php_v2\src\User;
+use a3330\pro_php_v2\src\Models\User;
 use PDO;
 
 class UserRepository implements UserRepositoryInterface
@@ -19,25 +19,6 @@ class UserRepository implements UserRepositoryInterface
         $this->connection = $this->connector->getConnection();
     }
 
-
-    public function save(User $user): void
-    {
-        $statement = $this->connection->prepare(
-            '
-                    INSERT INTO user (first_name, last_name, created_at)
-                    VALUES (:first_name, :last_name, :created_at)
-                  '
-        );
-
-        $statement->execute(
-            [
-                ':first_name' => $user->getFirstName(),
-                ':last_name' => $user->getLastName(),
-                ':created_at' => $user->getCreatedAt()
-            ]
-        );
-    }
-
     /**
      * @throws UserNotFoundException
      * @throws \Exception
@@ -45,7 +26,7 @@ class UserRepository implements UserRepositoryInterface
     public function get(int $id): User
     {
         $statement = $this->connection->prepare(
-            "SELECT * FROM user WHERE id = :userId"
+            "select * from user where id = :userId"
         );
 
         $statement->execute([
@@ -56,11 +37,40 @@ class UserRepository implements UserRepositoryInterface
 
         if(!$userObj)
         {
-            throw new UserNotFoundException("User with id:$id not found");
+            throw new UserNotFoundException("User with id : $id not found");
         }
 
-        $user = new User
-        (
+        return $this->mapUser($userObj);
+    }
+
+    /**
+     * @throws UserNotFoundException
+     * @throws \Exception
+     */
+    public function findUserByEmail(string $email): User
+    {
+        $statement = $this->connection->prepare(
+            "select * from user where email = :email"
+        );
+
+        $statement->execute([
+            'email' => $email
+        ]);
+
+        $userObj = $statement->fetch(PDO::FETCH_OBJ);
+
+        if(!$userObj)
+        {
+            throw new UserNotFoundException("User with email : $email not found");
+        }
+
+        return $this->mapUser($userObj);
+    }
+
+    public function mapUser(object $userObj): User
+    {
+        $user = new User(
+            $userObj->email,
             $userObj->first_name,
             $userObj->last_name
         );
@@ -73,6 +83,5 @@ class UserRepository implements UserRepositoryInterface
             ->setDeletedAt(($deletedAt = $userObj->deleted_at) ? new DateTime($deletedAt) : null);
 
         return $user;
-
     }
 }

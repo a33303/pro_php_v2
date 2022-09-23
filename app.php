@@ -2,17 +2,18 @@
 
 require_once __DIR__ . '/vendor/autoload.php';
 
-use a3330\pro_php_v2\src\Article;
-use a3330\pro_php_v2\src\Comment;
-use a3330\pro_php_v2\src\User;
+use a3330\pro_php_v2\src\Arguments\Argument;
+use a3330\pro_php_v2\src\Commands\CreateUserCommand;
+use a3330\pro_php_v2\src\Exceptions\CommandException;
+use a3330\pro_php_v2\src\Repositories\UserRepository;
 
-$post = new Article(1, 1, 'текст', 'текст');
-$user = new User(1, 'first', 'last');
-$comment = new Comment(1, 1, 1, 'text text');
+$userRepository = new UserRepository();
+$command = new CreateUserCommand($userRepository);
 
-print_r($post);
-print_r($user);
-print_r($comment);
-
-
+try{
+    $command->handle(Argument::fromArgv($argv));
+} catch (CommandException $commandException)
+{
+    echo $commandException->getMessage();
+}
 
