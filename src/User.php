@@ -2,21 +2,39 @@
 
 namespace a3330\pro_php_v2\src;
 
-include_once "src/Model.php";
+//include_once "src/Model.php";
 
-class User extends Model
+use a3330\pro_php_v2\src\Date\DateTime;
+
+use a3330\pro_php_v2\src\Traits\Active;
+use a3330\pro_php_v2\src\Traits\Created;
+use a3330\pro_php_v2\src\Traits\Deleted;
+use a3330\pro_php_v2\src\Traits\Updated;
+use a3330\pro_php_v2\src\Traits\Id;
+
+class User
 {
-        public function __construct(
-        int $id = null,
+    use Id;
+    use Active;
+    use Created;
+    use Updated;
+    use Deleted;
+
+    public function __construct(
+        //int $id = null,
         private ?string $firstName,
         private ?string $lastName,
     )
     {
-        parent::__construct($id);
+        //parent::__construct($id);
+        $this->createdAt = new DateTime();
     }
 
     public function __toString(){
-        return $this->firstName . $this->lastName;
+        return
+            $this->firstName. ' '.
+            $this->lastName .
+            ' (на сайте с ' . $this->createdAt->format('Y-m-d') . ')';
     }
 
     /**
@@ -28,14 +46,6 @@ class User extends Model
     }
 
     /**
-     * @param string|null $firstName
-     */
-    public function setFirstName(?string $firstName): void
-    {
-        $this->firstName = $firstName;
-    }
-
-    /**
      * @return string|null
      */
     public function getLastName(): ?string
@@ -43,13 +53,6 @@ class User extends Model
         return $this->lastName;
     }
 
-    /**
-     * @param string|null $lastName
-     */
-    public function setLastName(?string $lastName): void
-    {
-        $this->lastName = $lastName;
-    }
 
 
 }

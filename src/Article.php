@@ -2,20 +2,22 @@
 
 namespace a3330\pro_php_v2\src;
 
-include_once "src/Model.php";
+//include_once "src/Model.php";
 
 use a3330\pro_php_v2\src\User;
+use a3330\pro_php_v2\src\Traits\Id;
 
-class Articles extends Model
+class Article
 {
+    use Id;
+
     public function __construct(
-        int $id = null,
         private User $author_id,
         private ?string $title,
         private ?string $description
     )
     {
-        parent::__construct($id);
+        //parent::__construct($id);
     }
 
     public function __toString(){
@@ -48,28 +50,11 @@ class Articles extends Model
     }
 
     /**
-     * @param string|null $title
-     */
-    public function setTitle(?string $title): void
-    {
-        $this->title = $title;
-    }
-
-    /**
      * @return string|null
      */
     public function getDescription(): ?string
     {
         return $this->description;
     }
-
-    /**
-     * @param string|null $description
-     */
-    public function setDescription(?string $description): void
-    {
-        $this->description = $description;
-    }
-
 
 }
