@@ -25,6 +25,9 @@ class CreateUserCommand extends CreateUserCommandInterface
         $this->connection = $this->connector->getConnection();
     }
 
+    /**
+     * @throws CommandException
+     */
     public function handle(Argument $argument): void
     {
         $email = $argument->get('email');
@@ -42,6 +45,7 @@ class CreateUserCommand extends CreateUserCommandInterface
                     VALUES (:email, :first_name, :last_name, :created_at)
                   '
         );
+
 
         $statement->execute(
             [

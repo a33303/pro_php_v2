@@ -16,8 +16,8 @@ class CommentNotFoundExceptionTest extends TestCase
     {
         $arguments = new Argument(["text" => '12345']);
         $this->expectException(CommentNotFoundException::class);
-        $this->expectExceptionMessage("Comment with id: text not found");
-        $arguments->get('text');
+        $this->expectExceptionMessage("Comment with id not found");
+        $arguments->get('some_key');
     }
 
     public function testItConvertsCommentToStrings($inputValue, $expectedValue): void
@@ -40,7 +40,7 @@ class CommentNotFoundExceptionTest extends TestCase
         $repository = new CommentRepository($connectionStub);
         $this->expectException(CommentNotFoundException::class);
         $this->expectExceptionMessage('Cannot find comment');
-        $repository->get('some_text');
+        $repository->get("some_key");
 
     }
 }
