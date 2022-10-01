@@ -2,7 +2,9 @@
 
 namespace a3330\pro_php_v2\src\Request;
 
+use Exception;
 use HttpException;
+use JsonException;
 
 class Request
 {
@@ -10,7 +12,8 @@ class Request
         private array $get = [],
         private array $post = [],
         private array $server = [],
-        private array $cookies = []
+        private array $cookies = [],
+        private string $body
     )
     {
     }
@@ -72,5 +75,25 @@ class Request
             throw new HttpException("Empty header in the request: $header");
         }
         return $value;
+    }
+
+    public function jsonBodyField(string $key): string
+    {
+        try {
+            $data = json_decode($this->body, true);
+            if(!array_key_exists($key, $data))
+            {
+                throw new Exception('Поле не найдено');
+            }
+            if(empty($data[$key]))
+            {
+                throw new HttpException('Пустые данные');
+            }
+            return $data[$key];
+
+        }catch (JsonException $exception)
+        {
+            throw new Exception($exception);
+        }
     }
 }

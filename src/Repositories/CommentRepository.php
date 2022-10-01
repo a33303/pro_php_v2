@@ -8,15 +8,8 @@ use a3330\pro_php_v2\src\Models\Comment;
 use a3330\pro_php_v2\src\Exceptions\CommentNotFoundException;
 use PDO;
 
-class CommentRepository implements CommentRepositoryInterface
+class CommentRepository extends AbstractRepository implements CommentRepositoryInterface
 {
-    private PDO $connection;
-
-    public function __construct(private ?ConnectorInterface $connector = null)
-    {
-        $this->connector = $connector ?? new SqLiteConnector();
-        $this->connection = $this->connector->getConnection();
-    }
 
     public function get(int $id): Comment
     {

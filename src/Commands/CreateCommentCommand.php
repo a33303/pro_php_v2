@@ -17,10 +17,9 @@ class CreateCommentCommand extends CreateCommentCommandInterface
 
     public function __construct(
         public CommentRepositoryInterface $commentRepository,
-        private ?ConnectorInterface $connector = null
+        private ConnectorInterface $connector
     )
     {
-        $this->connector = $connector ?? new SqLiteConnector();
         $this->connection = $this->connector->getConnection();
     }
 
