@@ -10,15 +10,8 @@ use a3330\pro_php_v2\src\Exceptions\ArticleNotFoundException;
 use a3330\pro_php_v2\src\Models\User;
 use PDO;
 
-class ArticleRepository implements ArticlesRepositoryInterface
+class ArticleRepository extends AbstractRepository  implements ArticlesRepositoryInterface
 {
-    private PDO $connection;
-
-    public function __construct(private ?ConnectorInterface $connector = null)
-    {
-        $this->connector = $connector ?? new SqLiteConnector();
-        $this->connection = $this->connector->getConnection();
-    }
 
     public function get(int $id): Article
     {

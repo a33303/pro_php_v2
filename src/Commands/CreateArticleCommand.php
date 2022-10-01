@@ -16,10 +16,9 @@ class CreateArticleCommand extends CreateArticleCommandInterface
 
     public function __construct(
         private ArticlesRepositoryInterface $articlesRepository,
-        private ?ConnectorInterface $connector = null)
+        private ConnectorInterface $connector)
 
     {
-        $this->connector = $connector ?? new SqLiteConnector();
         $this->connection = $this->connector->getConnection();
     }
 

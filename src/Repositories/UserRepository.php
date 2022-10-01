@@ -9,16 +9,8 @@ use a3330\pro_php_v2\src\Exceptions\UserNotFoundException;
 use a3330\pro_php_v2\src\Models\User;
 use PDO;
 
-class UserRepository implements UserRepositoryInterface
+class UserRepository extends AbstractRepository implements UserRepositoryInterface
 {
-    private PDO $connection;
-
-    public function __construct(private ?ConnectorInterface $connector = null)
-    {
-        $this->connector = $connector ?? new SqLiteConnector();
-        $this->connection = $this->connector->getConnection();
-    }
-
     /**
      * @throws UserNotFoundException
      * @throws \Exception
