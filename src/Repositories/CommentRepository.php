@@ -18,41 +18,27 @@ class CommentRepository implements CommentRepositoryInterface
         $this->connection = $this->connector->getConnection();
     }
 
-    public function save(Comment $comment): void
+    public function get(int $id): Comment
     {
         $statement = $this->connection->prepare(
-            '
-                    INSERT INTO comment (post_id, author_id, text)
-                    VALUES (:post_id, :author_id, :text)
-                  '
-        );
-
-        $statement->execute(
-            [
-                ':post_id' => $comment->getArticlesId(),
-                ':author_id' => $comment->getAuthorId(),
-                ':text' => $comment->getText()
-            ]
-        );
-    }
-
-    public function get(string $text): Comment
-    {
-        $statement = $this->connection->prepare(
-            'SELECT * FROM comment WHERE message_text = :commentText'
+            'SELECT * FROM comment WHERE message_text = :commentId'
         );
 
         $statement->execute([
-            'commentText' => $text
+            'commentId' => $id
         ]);
 
         $commentObj = $statement->fetch(PDO::FETCH_OBJ);
 
-        if (!$commentObj)
-        {
-            throw new CommentNotFoundException ("Comment with $text not found");
+        if (!$commentObj) {
+            throw new CommentNotFoundException ("Comment with $id not found");
         }
 
+        return $this->mapComment($commentObj);
+    }
+
+        public function mapComment(object $commentObj): Comment
+    {
         $comment = new Comment
         (
             $commentObj->post_id,
@@ -61,9 +47,27 @@ class CommentRepository implements CommentRepositoryInterface
 
         );
 
-        $comment ->setId($commentObj->id);
-
+        $comment->setId($commentObj->id);
         return $comment;
     }
 
+    public function findCommentByText(string $text): Comment
+    {
+        $statement = $this->connection->prepare(
+            "select * from user where text = :text"
+        );
+
+        $statement->execute([
+            'text' => $text
+        ]);
+
+        $commentObj = $statement->fetch(PDO::FETCH_OBJ);
+
+        if(!$commentObj)
+        {
+            throw new CommentNotFoundException("User with text : $text not found");
+        }
+
+        return $this->mapComment($commentObj);
+    }
 }

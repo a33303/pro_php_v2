@@ -40,10 +40,10 @@ class ArticleRepository implements ArticlesRepositoryInterface
     }
 
     /**
-     * @throws UserNotFoundException
+     * @throws ArticleNotFoundException
      * @throws \Exception
      */
-    public function findArticleByTitle(string|int $title): Article
+    public function findArticleByTitle(string $title): Article
     {
         $statement = $this->connection->prepare(
             "select * from user where title = :title"
@@ -76,5 +76,29 @@ class ArticleRepository implements ArticlesRepositoryInterface
         $article ->setId($articleObj->id);
 
         return $article;
+    }
+
+    /**
+     * @throws ArticleNotFoundException
+     * @throws \Exception
+     */
+    public function findArticleByDescription(string $description): Article
+    {
+        $statement = $this->connection->prepare(
+            "select * from user where description = :description"
+        );
+
+        $statement->execute([
+            'description' => $description
+        ]);
+
+        $articleObj = $statement->fetch(PDO::FETCH_OBJ);
+
+        if(!$articleObj)
+        {
+            throw new ArticleNotFoundException("Article with title : $description not found");
+        }
+
+        return $this->mapArticle($articleObj);
     }
 }
