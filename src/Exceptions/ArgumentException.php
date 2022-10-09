@@ -6,6 +6,4 @@ use RuntimeException;
 
 class ArgumentException extends RuntimeException
 {
-    protected $message = 'Argument not found';
-
 }

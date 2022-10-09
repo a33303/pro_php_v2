@@ -2,7 +2,7 @@
 
 namespace a3330\pro_php_v2\src\Commands;
 
-use a3330\pro_php_v2\src\Arguments\Argument;
+use a3330\pro_php_v2\src\Argument\Argument;
 use a3330\pro_php_v2\src\Connection\ConnectorInterface;
 use a3330\pro_php_v2\src\Connection\SqLiteConnector;
 use a3330\pro_php_v2\src\Exceptions\ArticleNotFoundException;
@@ -16,7 +16,7 @@ use a3330\pro_php_v2\src\Repositories\UserRepositoryInterface;
 use PDO;
 use Psr\Log\LoggerInterface;
 
-class CreateCommentCommand extends CreateCommentCommandInterface
+class CreateCommentCommand implements CreateCommentCommandInterface
 {
     private PDO $connection;
 

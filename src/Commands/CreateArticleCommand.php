@@ -2,19 +2,17 @@
 
 namespace a3330\pro_php_v2\src\Commands;
 
-use a3330\pro_php_v2\src\Arguments\Argument;
+use a3330\pro_php_v2\src\Argument\Argument;
 use a3330\pro_php_v2\src\Connection\ConnectorInterface;
-use a3330\pro_php_v2\src\Connection\SqLiteConnector;
 use a3330\pro_php_v2\src\Exceptions\ArticleNotFoundException;
 use a3330\pro_php_v2\src\Exceptions\CommandException;
 use a3330\pro_php_v2\src\Exceptions\UserNotFoundException;
 use a3330\pro_php_v2\src\Repositories\ArticlesRepositoryInterface;
 use a3330\pro_php_v2\src\Repositories\UserRepositoryInterface;
-use a3330\pro_php_v2\src\Response\ErrorResponse;
 use PDO;
 use Psr\Log\LoggerInterface;
 
-class CreateArticleCommand extends CreateArticleCommandInterface
+class CreateArticleCommand implements CreateArticleCommandInterface
 {
     private PDO $connection;
 
@@ -30,7 +28,6 @@ class CreateArticleCommand extends CreateArticleCommandInterface
     }
 
     /**
-     * @throws CommandException
      */
     public function handle(Argument $argument): void
     {

@@ -2,7 +2,7 @@
 
 namespace Test\Article;
 
-use a3330\pro_php_v2\src\Arguments\Argument;
+use a3330\pro_php_v2\src\Argument\Argument;
 use a3330\pro_php_v2\src\Commands\CreateArticleCommand;
 use a3330\pro_php_v2\src\Exceptions\ArticleNotFoundException;
 use a3330\pro_php_v2\src\Exceptions\CommandException;

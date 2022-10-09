@@ -25,6 +25,8 @@ class User
         private string $email,
         private ?string $firstName,
         private ?string $lastName,
+        private ?string $password = null,
+        private ?User $author = null
     )
     {
         //parent::__construct($id);
@@ -61,6 +63,54 @@ class User
     public function getLastName(): ?string
     {
         return $this->lastName;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPassword(): string
+    {
+        return $this->password;
+    }
+
+    /**
+     * @return User|null
+     */
+    public function getAuthor(): ?User
+    {
+        return $this->author;
+    }
+
+    /**
+     * @param string|null $password
+     * @return User
+     */
+    public function setPassword(?string $password): self
+    {
+        $this->password = $password;
+
+        return $this;
+    }
+
+    /**
+     * @param User|null $author
+     * @return User
+     */
+    public function setAuthor(?User $author): self
+    {
+        $this->author = $author;
+
+        return $this;
+    }
+
+    public function hash(string $password): bool|string
+    {
+        return hash('sha256', $this->email . $password);
+    }
+
+    public function checkPassword(string $password): bool|string
+    {
+        return $this->hash($password) === $this->password;
     }
 
 

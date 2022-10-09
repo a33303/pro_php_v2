@@ -1,7 +1,11 @@
 <?php
 
+use a3330\pro_php_v2\src\Authentification\AuthentificationInterface;
+use a3330\pro_php_v2\src\Authentification\TokenAuthentification;
 use a3330\pro_php_v2\src\Commands\CreateArticleCommand;
 use a3330\pro_php_v2\src\Commands\CreateArticleCommandInterface;
+use a3330\pro_php_v2\src\Commands\CreateAuthTokenCommand;
+use a3330\pro_php_v2\src\Commands\CreateAuthTokenCommandInterface;
 use a3330\pro_php_v2\src\Commands\CreateCommentCommand;
 use a3330\pro_php_v2\src\Commands\CreateCommentCommandInterface;
 use a3330\pro_php_v2\src\Commands\CreateUserCommand;
@@ -13,8 +17,12 @@ use a3330\pro_php_v2\src\Handlers\ArticleSearchHandler;
 use a3330\pro_php_v2\src\Handlers\ArticleSearchHandlerInterface;
 use a3330\pro_php_v2\src\Handlers\CommentSearchHandler;
 use a3330\pro_php_v2\src\Handlers\CommentSearchHandlerInterface;
+use a3330\pro_php_v2\src\Handlers\LoginHandler;
+use a3330\pro_php_v2\src\Handlers\LoginHandlerInterface;
 use a3330\pro_php_v2\src\Handlers\UserSearchHandler;
 use a3330\pro_php_v2\src\Handlers\UserSearchHandlerInterface;
+use a3330\pro_php_v2\src\Repositories\AuthTokenRepository;
+use a3330\pro_php_v2\src\Repositories\AuthTokenRepositoryInterface;
 use a3330\pro_php_v2\src\Repositories\UserRepository;
 use a3330\pro_php_v2\src\Repositories\UserRepositoryInterface;
 use a3330\pro_php_v2\src\Request\Request;
@@ -63,5 +71,9 @@ $container->bind(CommentSearchHandlerInterface::class, CommentSearchHandler::cla
 $container->bind(CreateUserCommandInterface::class, CreateUserCommand::class);
 $container->bind(CreateArticleCommandInterface::class, CreateArticleCommand::class);
 $container->bind(CreateCommentCommandInterface::class, CreateCommentCommand::class);
+$container->bind(AuthentificationInterface::class, TokenAuthentification::class);
+$container->bind(CreateAuthTokenCommandInterface::class, CreateAuthTokenCommand::class);
+$container->bind(LoginHandlerInterface::class, LoginHandler::class);
+$container->bind(AuthTokenRepositoryInterface::class, AuthTokenRepository::class);
 
 return $container;
