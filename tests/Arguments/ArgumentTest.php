@@ -2,7 +2,7 @@
 
 namespace Test\Arguments;
 
-use  a3330\pro_php_v2\src\Arguments\Argument;
+use  a3330\pro_php_v2\src\Argument\Argument;
 use a3330\pro_php_v2\src\Connection\SqLiteConnector;
 use  a3330\pro_php_v2\src\Exceptions\ArgumentException;
 use a3330\pro_php_v2\src\Exceptions\ArticleNotFoundException;

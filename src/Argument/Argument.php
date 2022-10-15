@@ -1,11 +1,8 @@
 <?php
 
-namespace a3330\pro_php_v2\src\Arguments;
+namespace a3330\pro_php_v2\src\Argument;
 
-use a3330\pro_php_v2\src\Decorator\ArgumentDecorator;
 use a3330\pro_php_v2\src\Exceptions\ArgumentException;
-use a3330\pro_php_v2\src\Exceptions\CommandException;
-
 
 final class Argument
 {
@@ -13,14 +10,15 @@ final class Argument
 
     public function __construct(iterable $arguments)
     {
-        foreach ($arguments as $argument => $value) {
-            $stingValue = trim((string) $value);
-            if (!empty($stingValue))
+        foreach ($arguments as $argument => $value)
+        {
+            $stringValue = is_object($value) ? $value : trim((string) $value);
+            if(empty($stringValue))
             {
                 continue;
             }
 
-            $this->arguments[$argument] = $value;
+            $this->arguments[$argument] = $stringValue;
         }
     }
 
@@ -31,7 +29,8 @@ final class Argument
         foreach ($argv as $argument)
         {
             $parts = explode('=', $argument);
-            if (count($parts) !== 2)
+
+            if(count($parts) !== 2)
             {
                 continue;
             }
@@ -42,17 +41,13 @@ final class Argument
         return new self($arguments);
     }
 
-    public function get(string $argument): string
+    public function get(string $argument) : mixed
     {
-        if (array_key_exists($argument, $this->arguments))
+        if(!array_key_exists($argument, $this->arguments))
         {
-            throw new ArgumentException(
-                "No such arguments: $argument".PHP_EOL
-            );
+            throw new ArgumentException("No such argument: $argument");
         }
 
         return $this->arguments[$argument];
     }
-
-
 }

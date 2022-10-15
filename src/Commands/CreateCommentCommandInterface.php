@@ -2,12 +2,9 @@
 
 namespace a3330\pro_php_v2\src\Commands;
 
-use a3330\pro_php_v2\src\Arguments\Argument;
+use a3330\pro_php_v2\src\Argument\Argument;
 
-class CreateCommentCommandInterface
+interface CreateCommentCommandInterface
 {
-    public function handle(Argument $argument): void
-    {
-
-    }
+    public function handle(Argument $argument): void;
 }

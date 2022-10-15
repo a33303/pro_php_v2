@@ -7,13 +7,14 @@ use a3330\pro_php_v2\src\Connection\SqLiteConnector;
 use a3330\pro_php_v2\src\Date\DateTime;
 use a3330\pro_php_v2\src\Exceptions\UserNotFoundException;
 use a3330\pro_php_v2\src\Models\User;
+use Exception;
 use PDO;
 
 class UserRepository extends AbstractRepository implements UserRepositoryInterface
 {
     /**
      * @throws UserNotFoundException
-     * @throws \Exception
+     * @throws Exception
      */
     public function get(int $id): User
     {
@@ -37,7 +38,7 @@ class UserRepository extends AbstractRepository implements UserRepositoryInterfa
 
     /**
      * @throws UserNotFoundException
-     * @throws \Exception
+     * @throws Exception
      */
     public function findUserByEmail(string $email): User
     {
@@ -61,10 +62,14 @@ class UserRepository extends AbstractRepository implements UserRepositoryInterfa
 
     public function mapUser(object $userObj): User
     {
+        $author = $userObj->author_id ?  $this->get($userObj->author_id) : null;
+
         $user = new User(
             $userObj->email,
             $userObj->first_name,
-            $userObj->last_name
+            $userObj->last_name,
+            $userObj->password,
+            $author
         );
 
         $user

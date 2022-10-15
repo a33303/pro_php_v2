@@ -2,7 +2,7 @@
 
 namespace Test\Comment;
 
-use a3330\pro_php_v2\src\Arguments\Argument;
+use a3330\pro_php_v2\src\Argument\Argument;
 use a3330\pro_php_v2\src\Exceptions\CommentNotFoundException;
 use a3330\pro_php_v2\src\Repositories\CommentRepository;
 use PDO;
