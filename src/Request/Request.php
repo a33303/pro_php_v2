@@ -19,20 +19,20 @@ class Request
     }
 
     /**
-     * @throws \Exception
+     * @throws Exception
      */
     public function path()
     {
         if(!array_key_exists('REQUEST_URI', $this->server))
         {
-            throw new \Exception('Cannot get path the request');
+            throw new Exception('Cannot get path the request');
         }
 
         $components = parse_url($this->server['REQUEST_URI']);
 
         if(!is_array($components) || !array_key_exists('path', $components ))
         {
-            throw new \Exception('Cannot get path from the request');
+            throw new Exception('Cannot get path from the request');
         }
 
         return $components['path'];
@@ -45,7 +45,7 @@ class Request
     public function query(string $param): string
     {
         if (!array_key_exists($param, $this->get)) {
-            throw new \Exception(
+            throw new Exception(
                 "No such query param in the request: $param"
             );
         }
@@ -77,6 +77,10 @@ class Request
         return $value;
     }
 
+    /**
+     * @throws HttpException
+     * @throws Exception
+     */
     public function jsonBodyField(string $key): string
     {
         try {

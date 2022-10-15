@@ -4,12 +4,10 @@ namespace a3330\pro_php_v2\src\Commands;
 
 use a3330\pro_php_v2\src\Argument\Argument;
 use a3330\pro_php_v2\src\Connection\ConnectorInterface;
-use a3330\pro_php_v2\src\Connection\SqLiteConnector;
 use a3330\pro_php_v2\src\Exceptions\ArticleNotFoundException;
 use a3330\pro_php_v2\src\Exceptions\CommandException;
 use a3330\pro_php_v2\src\Exceptions\CommentNotFoundException;
 use a3330\pro_php_v2\src\Exceptions\UserNotFoundException;
-use a3330\pro_php_v2\src\Models\Comment;
 use a3330\pro_php_v2\src\Repositories\ArticlesRepositoryInterface;
 use a3330\pro_php_v2\src\Repositories\CommentRepositoryInterface;
 use a3330\pro_php_v2\src\Repositories\UserRepositoryInterface;
@@ -21,9 +19,9 @@ class CreateCommentCommand implements CreateCommentCommandInterface
     private PDO $connection;
 
     public function __construct(
-        public CommentRepositoryInterface $commentRepository,
-        public UserRepositoryInterface $userRepository,
-        public ArticlesRepositoryInterface $articlesRepository,
+        private CommentRepositoryInterface $commentRepository,
+        private UserRepositoryInterface $userRepository,
+        private ArticlesRepositoryInterface $articlesRepository,
         private ConnectorInterface $connector,
         private LoggerInterface $logger,
     )
@@ -31,14 +29,11 @@ class CreateCommentCommand implements CreateCommentCommandInterface
         $this->connection = $this->connector->getConnection();
     }
 
-    /**
-     * @throws CommandException
-     */
     public function handle(Argument $argument): void
     {
         $this->logger->info("Create comment command started");
 
-        $author_id = $argument->get('author_id');
+        $author = $argument->get('author');
         $article_id = $argument->get('article_id');
         $text = $argument->get('text');
 
@@ -49,8 +44,8 @@ class CreateCommentCommand implements CreateCommentCommandInterface
             //throw new CommandException("Comment already exist: $text".PHP_EOL);
         }
 
-        if ($this->userAlready($author_id)){
-            $this->logger->warning("User already exist: $author_id");
+        if ($this->userAlready($author)){
+            $this->logger->warning("User already exist: $author");
             return;
         }
 
@@ -61,15 +56,15 @@ class CreateCommentCommand implements CreateCommentCommandInterface
 
         $statement = $this->connection->prepare(
             '
-                    INSERT INTO comment (post_id, author_id, text)
-                    VALUES (:post_id, :author_id, :text)
+                    INSERT INTO comment (article_id, author, text)
+                    VALUES (:article_id, :author, :text)
                   '
         );
 
         $statement->execute(
             [
-                ':post_id' => $article_id,
-                ':author_id' => $author_id,
+                ':article_id' => $article_id,
+                ':author_id' => $author,
                 ':text' => $text
             ]
         );
@@ -89,10 +84,10 @@ class CreateCommentCommand implements CreateCommentCommandInterface
         return true;
     }
 
-    private function userAlready(int $author_id): bool
+    private function userAlready(int $author): bool
     {
         try {
-            $this->userRepository->get($author_id);
+            $this->userRepository->get($author);
         } catch (UserNotFoundException $exception) {
             return false;
         }

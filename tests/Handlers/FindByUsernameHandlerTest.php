@@ -6,12 +6,12 @@ use a3330\pro_php_v2\src\Connection\ConnectorInterface;
 use a3330\pro_php_v2\src\Exceptions\UserNotFoundException;
 use a3330\pro_php_v2\src\Handlers\UserSearchHandler;
 use a3330\pro_php_v2\src\Handlers\UserSearchHandlerInterface;
+use a3330\pro_php_v2\src\Models\User\User;
+use a3330\pro_php_v2\src\Repositories\UserRepository;
+use a3330\pro_php_v2\src\Repositories\UserRepositoryInterface;
 use a3330\pro_php_v2\src\Request\Request;
 use a3330\pro_php_v2\src\Response\ErrorResponse;
 use a3330\pro_php_v2\src\Response\SuccessResponse;
-use a3330\pro_php_v2\src\Models\User;
-use a3330\pro_php_v2\src\Repositories\UserRepository;
-use a3330\pro_php_v2\src\Repositories\UserRepositoryInterface;
 use Dotenv\Dotenv;
 use PDO;
 use PHPUnit\Framework\TestCase;
@@ -129,35 +129,5 @@ class FindByUsernameHandlerTest extends TestCase
             '{"success":true,"data":{"email":"fadeev5@example.ru","name":"Georgy Fadeev"}}');
 
         echo json_encode($response);
-    }
-
-    private function usersRepository(array $users): UserRepositoryInterface
-    {
-        return new class($users) implements UserRepositoryInterface {
-            public function __construct(
-                private array $users
-            ) {
-            }
-
-            public function save(User $user): void
-            {
-            }
-
-            public function get(int $id): User
-            {
-                throw new UserNotFoundException("Not found");
-            }
-
-            public function findUserByEmail(string $email): User
-            {
-                foreach ($this->users as $user) {
-                    if ($user instanceof User && $email === $user->getEmail()) {
-                        return $user;
-                    }
-                }
-
-                throw new UserNotFoundException("Not found");
-            }
-        };
     }
 }

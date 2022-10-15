@@ -50,4 +50,9 @@ final class Argument
 
         return $this->arguments[$argument];
     }
+
+    public function has(string $argument) : bool
+    {
+       return array_key_exists($argument, $this->arguments);
+    }
 }

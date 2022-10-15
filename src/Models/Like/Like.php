@@ -1,7 +1,9 @@
 <?php
 
-namespace a3330\pro_php_v2\src\Models;
+namespace a3330\pro_php_v2\src\Models\Like;
 
+use a3330\pro_php_v2\src\Models\Article\Article;
+use a3330\pro_php_v2\src\Models\User\User;
 use a3330\pro_php_v2\src\Traits\Id;
 
 class Like

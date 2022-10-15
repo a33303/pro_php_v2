@@ -1,16 +1,15 @@
 <?php
 
-namespace a3330\pro_php_v2\src\Models;
+namespace a3330\pro_php_v2\src\Models\User;
 
 //include_once "src/Model.php";
 
 use a3330\pro_php_v2\src\Date\DateTime;
-
 use a3330\pro_php_v2\src\Traits\Active;
 use a3330\pro_php_v2\src\Traits\Created;
 use a3330\pro_php_v2\src\Traits\Deleted;
-use a3330\pro_php_v2\src\Traits\Updated;
 use a3330\pro_php_v2\src\Traits\Id;
+use a3330\pro_php_v2\src\Traits\Updated;
 
 class User
 {
@@ -21,7 +20,6 @@ class User
     use Deleted;
 
     public function __construct(
-        //int $id = null,
         private string $email,
         private ?string $firstName,
         private ?string $lastName,
@@ -29,7 +27,6 @@ class User
         private ?User $author = null
     )
     {
-        //parent::__construct($id);
         $this->createdAt = new DateTime();
     }
 
@@ -41,50 +38,31 @@ class User
             ' (на сайте с ' . $this->createdAt->format('Y-m-d') . ')';
     }
 
-    /**
-     * @return string
-     */
     public function getEmail(): string
     {
         return $this->email;
     }
 
-    /**
-     * @return string|null
-     */
     public function getFirstName(): ?string
     {
         return $this->firstName;
     }
 
-    /**
-     * @return string|null
-     */
     public function getLastName(): ?string
     {
         return $this->lastName;
     }
 
-    /**
-     * @return string
-     */
     public function getPassword(): string
     {
         return $this->password;
     }
 
-    /**
-     * @return User|null
-     */
     public function getAuthor(): ?User
     {
         return $this->author;
     }
 
-    /**
-     * @param string|null $password
-     * @return User
-     */
     public function setPassword(?string $password): self
     {
         $this->password = $password;
@@ -92,10 +70,6 @@ class User
         return $this;
     }
 
-    /**
-     * @param User|null $author
-     * @return User
-     */
     public function setAuthor(?User $author): self
     {
         $this->author = $author;

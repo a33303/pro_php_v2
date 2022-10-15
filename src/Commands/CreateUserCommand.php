@@ -7,7 +7,7 @@ use a3330\pro_php_v2\src\Connection\ConnectorInterface;
 use a3330\pro_php_v2\src\Date\DateTime;
 use a3330\pro_php_v2\src\Exceptions\CommandException;
 use a3330\pro_php_v2\src\Exceptions\UserNotFoundException;
-use a3330\pro_php_v2\src\Models\User;
+use a3330\pro_php_v2\src\Models\User\User;
 use a3330\pro_php_v2\src\Repositories\UserRepositoryInterface;
 use PDO;
 
@@ -48,14 +48,14 @@ class CreateUserCommand implements CreateUserCommandInterface
         );
 
         /** @var User $author */
-        $author = $argument->get('author');
+        $author = $argument->has('author') ? $argument->get('author') : null;
 
         $statement->execute(
             [
                 ':email' => $email,
                 ':first_name' => $firstName,
                 ':last_name' => $lastName,
-                ':author' => $author->getId(),
+                ':author' => $author?->getId(),  //$author ? $author->getId() : null
                 ':password' => $hashPassword,
                 ':created_at' => new DateTime()
             ]

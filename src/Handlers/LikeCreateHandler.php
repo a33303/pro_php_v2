@@ -23,10 +23,10 @@ use Psr\Log\LoggerInterface;
 class LikeCreateHandler implements LikeCreateHandlerInterface
 {
     public function __construct(
-        public CreateLikeCommandInterface $createLikeCommand,
+        private CreateLikeCommandInterface $createLikeCommand,
         private AuthentificationInterface $identification,
-        public UserRepositoryInterface $userRepository,
-        public LikeRepositoryInterface $likeRepository,
+        private UserRepositoryInterface $userRepository,
+        private LikeRepositoryInterface $likeRepository,
         private LoggerInterface $logger
     ) {
     }

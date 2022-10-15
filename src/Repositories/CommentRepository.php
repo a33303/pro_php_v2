@@ -2,16 +2,14 @@
 
 namespace a3330\pro_php_v2\src\Repositories;
 
-use a3330\pro_php_v2\src\Connection\ConnectorInterface;
-use a3330\pro_php_v2\src\Connection\SqLiteConnector;
-use a3330\pro_php_v2\src\Models\Comment;
 use a3330\pro_php_v2\src\Exceptions\CommentNotFoundException;
+use a3330\pro_php_v2\src\Models\Comment\Post;
 use PDO;
 
 class CommentRepository extends AbstractRepository implements CommentRepositoryInterface
 {
 
-    public function get(int $id): Comment
+    public function get(int $id): Post
     {
         $statement = $this->connection->prepare(
             'SELECT * FROM comment WHERE message_text = :commentId'
@@ -30,12 +28,12 @@ class CommentRepository extends AbstractRepository implements CommentRepositoryI
         return $this->mapComment($commentObj);
     }
 
-        public function mapComment(object $commentObj): Comment
+        public function mapComment(object $commentObj): Post
     {
-        $comment = new Comment
+        $comment = new Post
         (
             $commentObj->post_id,
-            $commentObj->author_id,
+            $commentObj->author,
             $commentObj->text
 
         );
@@ -44,7 +42,7 @@ class CommentRepository extends AbstractRepository implements CommentRepositoryI
         return $comment;
     }
 
-    public function findCommentByText(string $text): Comment
+    public function findCommentByText(string $text): Post
     {
         $statement = $this->connection->prepare(
             "select * from user where text = :text"

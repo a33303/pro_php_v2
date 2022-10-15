@@ -3,9 +3,9 @@
 namespace a3330\pro_php_v2\src\Authentification;
 
 use a3330\pro_php_v2\src\Exceptions\AuthException;
-use a3330\pro_php_v2\src\Request\Request;
-use a3330\pro_php_v2\src\Models\User;
+use a3330\pro_php_v2\src\Models\User\User;
 use a3330\pro_php_v2\src\Repositories\UserRepositoryInterface;
+use a3330\pro_php_v2\src\Request\Request;
 use HttpException;
 use InvalidArgumentException;
 

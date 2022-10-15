@@ -13,7 +13,6 @@ use a3330\pro_php_v2\src\Request\Request;
 use a3330\pro_php_v2\src\Response\AbstractResponse;
 use a3330\pro_php_v2\src\Response\ErrorResponse;
 use a3330\pro_php_v2\src\Response\SuccessResponse;
-use a3330\pro_php_v2\src\Traits\Id;
 use Exception;
 use HttpException;
 use Psr\Log\LoggerInterface;
@@ -21,7 +20,7 @@ use Psr\Log\LoggerInterface;
 class ArticleCreateHandler implements ArticleCreateHandlerInterface
 {
     public function __construct(
-        public CreateArticleCommandInterface $createArticleCommand,
+        private CreateArticleCommandInterface $createArticleCommand,
         private AuthentificationInterface $identification,
         private UserRepositoryInterface $userRepository,
         private ArticlesRepositoryInterface $articlesRepository,
@@ -39,7 +38,7 @@ class ArticleCreateHandler implements ArticleCreateHandlerInterface
             $argument = new Argument([
                 'title' => $request->jsonBodyField('title'),
                 'text' => $request->jsonBodyField('text'),
-                'author_id' => $this->identification->user($request)
+                'author' => $this->identification->user($request)
             ]);
 
             $this->createArticleCommand->handle($argument);
@@ -70,8 +69,9 @@ class ArticleCreateHandler implements ArticleCreateHandlerInterface
 
         return new SuccessResponse(
             [
+                'author' => $article->getAuthor(),
                 'title' => $article->getTitle(),
-                'text' => $article->getDescription() . ' ' . $article->getAuthorId()
+                'text' => $article->getDescription()
             ]
         );
     }

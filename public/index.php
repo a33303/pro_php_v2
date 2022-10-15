@@ -11,15 +11,6 @@ use Psr\Container\ContainerInterface;
 
 require_once __DIR__ . '/autoload_runtime.php';
 
-//$userRepository = new UserRepository();
-//$command = new CreateUserCommand($userRepository);
-//
-//try{
-//    $command->handle($argv);
-//} catch (CommandException $commandException)
-//{
-//    echo $commandException->getMessage();
-//}
 
 /** @var UserSearchHandlerInterface $handler */
 $handler = $container->get(ArticleCreateHandlerInterface::class);

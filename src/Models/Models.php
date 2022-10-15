@@ -2,7 +2,7 @@
 
 namespace a3330\pro_php_v2\src\Models;
 
-class Model
+class Models
 {
     protected ?int $id;
 
