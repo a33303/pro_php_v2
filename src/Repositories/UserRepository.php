@@ -2,11 +2,9 @@
 
 namespace a3330\pro_php_v2\src\Repositories;
 
-use a3330\pro_php_v2\src\Connection\ConnectorInterface;
-use a3330\pro_php_v2\src\Connection\SqLiteConnector;
 use a3330\pro_php_v2\src\Date\DateTime;
 use a3330\pro_php_v2\src\Exceptions\UserNotFoundException;
-use a3330\pro_php_v2\src\Models\User;
+use a3330\pro_php_v2\src\Models\User\User;
 use Exception;
 use PDO;
 

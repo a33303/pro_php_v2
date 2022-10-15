@@ -4,9 +4,9 @@ namespace a3330\pro_php_v2\src\Authentification;
 
 use a3330\pro_php_v2\src\Exceptions\AuthException;
 use a3330\pro_php_v2\src\Exceptions\AuthTokenNotFoundException;
+use a3330\pro_php_v2\src\Models\User\User;
 use a3330\pro_php_v2\src\Repositories\AuthTokenRepositoryInterface;
 use a3330\pro_php_v2\src\Request\Request;
-use a3330\pro_php_v2\src\Models\User;
 use DateTimeImmutable;
 use HttpException;
 use InvalidArgumentException;

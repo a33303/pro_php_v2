@@ -6,10 +6,10 @@ use a3330\pro_php_v2\src\Connection\ConnectorInterface;
 use a3330\pro_php_v2\src\Exceptions\CommentNotFoundException;
 use a3330\pro_php_v2\src\Handlers\CommentSearchHandler;
 use a3330\pro_php_v2\src\Handlers\CommentSearchHandlerInterface;
+use a3330\pro_php_v2\src\Models\Comment\Post;
 use a3330\pro_php_v2\src\Repositories\CommentRepository;
 use a3330\pro_php_v2\src\Repositories\CommentRepositoryInterface;
 use a3330\pro_php_v2\src\Request\Request;
-use a3330\pro_php_v2\src\Models\Comment;
 use a3330\pro_php_v2\src\Response\ErrorResponse;
 use a3330\pro_php_v2\src\Response\SuccessResponse;
 use Dotenv\Dotenv;
@@ -137,19 +137,19 @@ class FindByCommentHandlerTest extends TestCase
                 $comments            ) {
             }
 
-            public function save(Comment $comments): void
+            public function save(Post $comments): void
             {
             }
 
-            public function get(int $id): Comment
+            public function get(int $id): Post
             {
                 throw new CommentNotFoundException("Not found");
             }
 
-              public function findCommentByText(string $text): Comment
+              public function findCommentByText(string $text): Post
             {
                 foreach ($this->comments as $comment) {
-                    if ($comment instanceof Comment && $text === $comment->getText()) {
+                    if ($comment instanceof Post && $text === $comment->getText()) {
                         return $comment;
                     }
                 }

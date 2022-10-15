@@ -2,7 +2,7 @@
 
 namespace a3330\pro_php_v2\src\Repositories;
 
-use a3330\pro_php_v2\src\Models\Article;
+use a3330\pro_php_v2\src\Models\Article\Article;
 
 interface ArticlesRepositoryInterface
 {

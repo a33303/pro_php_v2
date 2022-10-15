@@ -19,9 +19,9 @@ class CreateLikeCommand implements CreateLikeCommandInterface
     private PDO $connection;
 
     public function __construct(
-        public LikeRepositoryInterface $likeRepository,
-        public ArticlesRepositoryInterface $articlesRepository,
-        public UserRepositoryInterface $userRepository,
+        private LikeRepositoryInterface $likeRepository,
+        private ArticlesRepositoryInterface $articlesRepository,
+        private UserRepositoryInterface $userRepository,
         private ConnectorInterface $connector,
         private LoggerInterface $logger
     )

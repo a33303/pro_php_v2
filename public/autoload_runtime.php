@@ -27,8 +27,10 @@ use a3330\pro_php_v2\src\Repositories\UserRepository;
 use a3330\pro_php_v2\src\Repositories\UserRepositoryInterface;
 use a3330\pro_php_v2\src\Request\Request;
 use Dotenv\Dotenv;
+use Faker\Provider\Lorem;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
+use Monolog\Level;
 use Psr\Log\LoggerInterface;
 
 require_once __DIR__ . '/../vendor/autoload.php';
@@ -52,7 +54,7 @@ if($isNeedLogToFile)
 {
     $logger->pushHandler(new StreamHandler(
         __DIR__ . '/../var/log/pro_php_v2.log',
-        Level::Info
+        Level::info
     ));
 }
 
@@ -75,5 +77,16 @@ $container->bind(AuthentificationInterface::class, TokenAuthentification::class)
 $container->bind(CreateAuthTokenCommandInterface::class, CreateAuthTokenCommand::class);
 $container->bind(LoginHandlerInterface::class, LoginHandler::class);
 $container->bind(AuthTokenRepositoryInterface::class, AuthTokenRepository::class);
+
+
+$faker = new \Faker\Generator();
+
+$faker->addProvider(new \Faker\Provider\Person($faker));
+$faker->addProvider(new \Faker\Provider\ru_RU\Text($faker));
+$faker->addProvider(new \Faker\Provider\Internet($faker));
+$faker->addProvider(new Lorem($faker));
+
+$container->bind(\Faker\Generator::class, AuthTokenRepository::class);
+
 
 return $container;

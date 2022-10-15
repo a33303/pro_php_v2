@@ -2,12 +2,8 @@
 
 namespace a3330\pro_php_v2\src\Repositories;
 
-use a3330\pro_php_v2\src\Connection\ConnectorInterface;
-use a3330\pro_php_v2\src\Connection\SqLiteConnector;
-use a3330\pro_php_v2\src\Exceptions\UserNotFoundException;
-use a3330\pro_php_v2\src\Models\Article;
 use a3330\pro_php_v2\src\Exceptions\ArticleNotFoundException;
-use a3330\pro_php_v2\src\Models\User;
+use a3330\pro_php_v2\src\Models\Article\Article;
 use PDO;
 
 class ArticleRepository extends AbstractRepository  implements ArticlesRepositoryInterface
@@ -32,10 +28,6 @@ class ArticleRepository extends AbstractRepository  implements ArticlesRepositor
         return $this->mapArticle($articleObj);
     }
 
-    /**
-     * @throws ArticleNotFoundException
-     * @throws \Exception
-     */
     public function findArticleByTitle(string $title): Article
     {
         $statement = $this->connection->prepare(
@@ -56,25 +48,7 @@ class ArticleRepository extends AbstractRepository  implements ArticlesRepositor
         return $this->mapArticle($articleObj);
     }
 
-    public function mapArticle(object $articleObj): Article
-    {
-        $article = new Article
-        (
-            $articleObj->author_id,
-            $articleObj->title,
-            $articleObj->description
 
-        );
-
-        $article ->setId($articleObj->id);
-
-        return $article;
-    }
-
-    /**
-     * @throws ArticleNotFoundException
-     * @throws \Exception
-     */
     public function findArticleByDescription(string $description): Article
     {
         $statement = $this->connection->prepare(
@@ -93,5 +67,22 @@ class ArticleRepository extends AbstractRepository  implements ArticlesRepositor
         }
 
         return $this->mapArticle($articleObj);
+
+
+    }
+
+    public function mapArticle(object $articleObj): Article
+    {
+        $article = new Article
+        (
+            $articleObj->author_id,
+            $articleObj->title,
+            $articleObj->description
+
+        );
+
+        $article ->setId($articleObj->id);
+
+        return $article;
     }
 }

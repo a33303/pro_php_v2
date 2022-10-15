@@ -12,7 +12,9 @@ use Exception;
 
 class ArticleSearchHandler implements ArticleSearchHandlerInterface
 {
-    public function __construct(public ArticlesRepositoryInterface $articlesRepository)
+    public function __construct(
+        private ArticlesRepositoryInterface $articlesRepository
+    )
     {
     }
 
@@ -34,6 +36,7 @@ class ArticleSearchHandler implements ArticleSearchHandlerInterface
 
         return new SuccessResponse(
             [
+                'author' => $article->getAuthor(),
                 'title' => $article->getTitle(),
                 'description'=> $article->getDescription()
             ]

@@ -12,7 +12,9 @@ use Exception;
 
 class CommentSearchHandler implements CommentSearchHandlerInterface
 {
-    public function __construct(public CommentRepositoryInterface $commentRepository)
+    public function __construct(
+        private CommentRepositoryInterface $commentRepository
+    )
     {
     }
 
@@ -33,6 +35,7 @@ class CommentSearchHandler implements CommentSearchHandlerInterface
 
         return new SuccessResponse(
             [
+                'author' => $comment->getAuthor(),
                 'text' => $comment->getText()
             ]
         );
