@@ -2,6 +2,7 @@
 
 namespace Test\Handlers;
 
+use a3330\pro_php_v2\src\Connection\ConnectorInterface;
 use a3330\pro_php_v2\src\Exceptions\UserNotFoundException;
 use a3330\pro_php_v2\src\Handlers\UserSearchHandler;
 use a3330\pro_php_v2\src\Handlers\UserSearchHandlerInterface;
@@ -11,7 +12,10 @@ use a3330\pro_php_v2\src\Response\SuccessResponse;
 use a3330\pro_php_v2\src\Models\User;
 use a3330\pro_php_v2\src\Repositories\UserRepository;
 use a3330\pro_php_v2\src\Repositories\UserRepositoryInterface;
+use Dotenv\Dotenv;
+use PDO;
 use PHPUnit\Framework\TestCase;
+use Psr\Log\LoggerInterface;
 
 class FindByUsernameHandlerTest extends TestCase
 {
@@ -23,8 +27,64 @@ class FindByUsernameHandlerTest extends TestCase
         private ?UserSearchHandlerInterface $userSearchHandler = null
     )
     {
-        $this->userRepository ??= new UserRepository();
-        $this->userSearchHandler = $this->userSearchHandler ?? new UserSearchHandler($this->userRepository);
+        Dotenv::createImmutable(__DIR__.'/../../')->safeLoad();
+        $request = new Request($_GET, $_POST, $_SERVER, $_COOKIE);
+
+        $connector = new class() implements ConnectorInterface
+        {
+            public static function getConnection(): PDO
+            {
+                return new PDO(databaseConfig()['sqlite']['DATABASE_URL']);
+            }
+        };
+
+        $logger = new class() implements LoggerInterface
+        {
+            public function emergency(\Stringable|string $message, array $context = []): void
+            {
+            }
+
+            public function alert(\Stringable|string $message, array $context = []): void
+            {
+            }
+
+            public function critical(\Stringable|string $message, array $context = []): void
+            {
+            }
+
+            public function error(\Stringable|string $message, array $context = []): void
+            {
+            }
+
+            public function warning(\Stringable|string $message, array $context = []): void
+            {
+            }
+
+            public function notice(\Stringable|string $message, array $context = []): void
+            {
+            }
+
+            public function info(\Stringable|string $message, array $context = []): void
+            {
+            }
+
+            public function debug(\Stringable|string $message, array $context = []): void
+            {
+            }
+
+            public function log($level, \Stringable|string $message, array $context = []): void
+            {
+            }
+        };
+
+
+        $this->userRepository ??= new UserRepository($connector);
+        $this->userSearchHandler =
+            $this->userSearchHandler ?? new UserSearchHandler(
+                $this->userRepository,
+                $logger
+            );
+        $this->userSearchHandler->handle($request);
         parent::__construct($name, $data, $dataName);
     }
 
@@ -46,7 +106,7 @@ class FindByUsernameHandlerTest extends TestCase
      */
     public function testItReturnsErrorResponseIfUserNotFound(): void
     {
-        $request = new Request(['email' => 'fadeev123123@example.ru'], []);
+        $request = new Request(['email' => 'a33303@ir.ru'], []);
         $response = $this->userSearchHandler->handle($request);
 
         $this->assertInstanceOf(ErrorResponse::class, $response);
@@ -61,7 +121,7 @@ class FindByUsernameHandlerTest extends TestCase
      */
     public function testItReturnsSuccessfulResponse(): void
     {
-        $request = new Request(['email' => 'fadeev5@example.ru'], []);
+        $request = new Request(['email' => 'a33303@ir.ru'], []);
         $response = $this->userSearchHandler->handle($request);
 
         $this->assertInstanceOf(SuccessResponse::class, $response);

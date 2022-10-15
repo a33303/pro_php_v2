@@ -12,8 +12,9 @@ use Exception;
 
 class UserSearchHandler implements UserSearchHandlerInterface
 {
-    public function __construct(private UserRepositoryInterface $userRepository)
-    {
+    public function __construct(
+        private UserRepositoryInterface $userRepository,
+    ) {
     }
 
     public function handle(Request $request): AbstractResponse

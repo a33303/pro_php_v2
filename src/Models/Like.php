@@ -10,7 +10,8 @@ class Like
 
     public function __construct(
         private User $user_id,
-        private Article $article_id
+        private Article $article_id,
+        private $count_like
     )
     {
     }
@@ -46,6 +47,15 @@ class Like
     {
         $this->article_id = $article_id;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getCountLike(): bool
+    {
+        return $this->count_like;
+    }
+
 
 
 }

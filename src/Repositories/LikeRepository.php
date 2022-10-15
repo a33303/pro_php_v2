@@ -18,18 +18,18 @@ class LikeRepository extends AbstractRepository implements LikeRepositoryInterfa
     public function get(int $id): Like
     {
         $statement = $this->connection->prepare(
-            "select * from like where id = :articleId"
+            "select * from like where id = :likeId"
         );
 
         $statement->execute([
-            'articleId' => $id
+            'likeId' => $id
         ]);
 
         $likeObj = $statement->fetch(PDO::FETCH_OBJ);
 
         if(!$likeObj)
         {
-            throw new LikeNotFoundException("User with id : $id not found");
+            throw new LikeNotFoundException("Like with id : $id not found");
         }
 
         return $this->mapLike($likeObj);
@@ -39,7 +39,8 @@ class LikeRepository extends AbstractRepository implements LikeRepositoryInterfa
     {
         $like = new Like(
             $likeObj->user_id,
-            $likeObj->atricle_id);
+            $likeObj->atricle_id,
+            $likeObj->count_like);
 
         $like
             ->setId($likeObj->id);
@@ -64,7 +65,7 @@ class LikeRepository extends AbstractRepository implements LikeRepositoryInterfa
 
         if(!$likeObj)
         {
-            throw new LikeNotFoundException("User with email : $article_id not found");
+            throw new LikeNotFoundException("Like with article : $article_id not found");
         }
 
         return $this->mapLike($likeObj);
